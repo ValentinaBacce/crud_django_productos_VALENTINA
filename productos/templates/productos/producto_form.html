@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{% if view.object %}Editar{% else %}Nuevo{% endif %} producto{% endblock %}
+
+{% comment %}
+Esta plantilla implementa la vista para la creacion y edicion de productos.
+Extiende la estructura principal definida en "base.html" y utiliza un formulario
+para capturar o actualizar los datos del modelo Producto. La interfaz mantiene
+coherencia visual con el resto del sistema mediante el uso de componentes Bootstrap.
+{% endcomment %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-7">
+      <div class="card p-3 p-md-4">
+
+        {% comment %}
+        El encabezado del formulario cambia dinamicamente segun el contexto:
+        - Si existe un objeto en la vista (view.object), se interpreta como una edicion.
+        - Si no existe, se muestra el modo de creacion de un nuevo registro.
+        {% endcomment %}
+        <h3 class="mb-3">{% if view.object %}Editar{% else %}Nuevo{% endif %} producto</h3>
+
+        {% comment %}
+        El formulario utiliza el metodo POST para enviar la informacion al servidor.
+        Se incluye el token CSRF para proteger la aplicacion de ataques de falsificacion
+        de solicitudes entre sitios. El atributo "novalidate" desactiva la validacion HTML
+        permitiendo que el control de errores se maneje desde Django.
+        {% endcomment %}
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          {% comment %}
+          Cada campo se renderiza manualmente para mantener compatibilidad con el estilo
+          de formularios de Bootstrap. Los errores asociados a cada campo se muestran
+          directamente debajo del control correspondiente.
+          {% endcomment %}
+
+          <div class="mb-3">
+            <label>Nombre</label>
+            {{ form.nombre }}
+            {{ form.nombre.errors }}
+          </div>
+
+          <div class="mb-3">
+            <label>Descripcion</label>
+            {{ form.descripcion }}
+            {{ form.descripcion.errors }}
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label>Precio</label>
+              {{ form.precio }}
+              <small class="text-muted">Formato: 9999.99</small>
+              {{ form.precio.errors }}
+            </div>
+            <div class="col-md-6">
+              <label>Stock</label>
+              {{ form.stock }}
+              {{ form.stock.errors }}
+            </div>
+          </div>
+
+          {% comment %}
+          En la parte inferior se incluyen dos botones principales:
+          - "Cancelar": redirige a la lista general de productos sin guardar cambios.
+          - "Guardar": envia el formulario y guarda la informacion ingresada en la base de datos.
+          {% endcomment %}
+          <div class="d-flex gap-2 mt-4">
+            <a href="{% url 'productos:lista' %}" class="btn btn-outline-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

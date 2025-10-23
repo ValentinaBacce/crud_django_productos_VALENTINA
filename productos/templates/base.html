@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Mi Inventario{% endblock %}</title>
+
+  {% comment %}
+  Esta plantilla base define la estructura general del sistema de inventario.
+  Incluye las dependencias de estilo y los bloques que seran heredados por las
+  demas vistas (listado, detalle, formulario y eliminacion). Se utiliza el
+  framework Bootstrap 5 a traves de un CDN para asegurar una interfaz moderna,
+  adaptable y coherente sin necesidad de configuracion de archivos estaticos.
+  {% endcomment %}
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  {% comment %}
+  Se definen estilos personalizados que complementan el diseno de Bootstrap.
+  Incluyen ajustes de color, tipografia y espaciado para tarjetas, formularios
+  y botones. El resultado es una apariencia limpia y uniforme en todas las vistas.
+  {% endcomment %}
+  <style>
+    body{ background:#0f172a0d; } /* leve azul */
+    .navbar-brand{ font-weight:700; letter-spacing:.3px; }
+    .card{ border:none; border-radius:1rem; box-shadow:0 8px 24px rgba(15,23,42,.08); }
+    .badge-soft{ background:#eef2ff; color:#4338ca; }
+    .btn-rounded{ border-radius:999px; }
+    .price{ font-weight:700; font-size:1.1rem; }
+    footer{ color:#64748b; font-size:.9rem; }
+    /* Estilos generales de los formularios */
+    input[type=text], input[type=number], input[type=email],
+    input[type=password], textarea, input[type=url]{
+      width:100%; border:1px solid #e2e8f0; border-radius:.75rem; padding:.6rem .8rem;
+      background:#fff;
+    }
+    textarea{ min-height:120px; }
+    label{ font-weight:600; color:#334155; margin-bottom:.25rem; }
+  </style>
+
+  {% comment %}
+  Bloque adicional para insertar contenido extra en el encabezado
+  (por ejemplo, archivos CSS o metadatos especificos desde otras plantillas).
+  {% endcomment %}
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  {% comment %}
+  La barra de navegacion se mantiene fija en la parte superior del sitio.
+  Contiene enlaces directos al listado principal de productos y al formulario
+  de creacion. Se disena con clases de Bootstrap para adaptarse a pantallas
+  de distintos tamanos.
+  {% endcomment %}
+  <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'productos:lista' %}">🧾 Mi Inventario</a>
+      <div class="ms-auto">
+        <a href="{% url 'productos:crear' %}" class="btn btn-primary btn-rounded">Nuevo producto</a>
+      </div>
+    </div>
+  </nav>
+
+  {% comment %}
+  El bloque principal del contenido dinamico se inserta aqui.
+  Las demas plantillas reemplazan este bloque "content" con su contenido
+  especifico (lista, detalle, formulario o confirmacion de eliminacion).
+  {% endcomment %}
+  <main class="container py-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  {% comment %}
+  El pie de pagina muestra informacion de autoria y descripcion general
+  del proyecto. Se mantiene simple para conservar un aspecto minimalista.
+  {% endcomment %}
+  <footer class="container pb-4">
+    <hr>
+    <div class="d-flex justify-content-between align-items-center">
+      <span>CRUD Django • Productos</span>
+      <span>Hecho por Valentina Baccellieri</span>
+    </div>
+  </footer>
+
+  {% comment %}
+  Script de Bootstrap necesario para la funcionalidad de componentes
+  interactivos (como modales, desplegables o menus responsive).
+  Tambien se incluye un bloque adicional para scripts especificos
+  de cada vista si se requiere en el futuro.
+  {% endcomment %}
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
